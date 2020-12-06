@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include <fstream>
-// #include <bits/stdc++.h>
 using namespace std;
 
 struct Passport {
@@ -15,7 +14,6 @@ struct Passport {
     string pid;
     bool metric;
 };
-    // && p1.pid.size() == 9
 
 bool checkValid (Passport p1) {
     if (stoi(p1.byr) >= 1920 && stoi(p1.byr) <= 2002 
@@ -74,9 +72,6 @@ int main() {
                     if (newPass.pid.size() > 9) { 
                         cout << newPass.pid << endl; 
                     }
-
-                    // cout << "pid size is: " << newPass.pid.size() << endl;
-                    // cout << newPass.byr << ", " << newPass.iyr << ", " << newPass.eyr << ", " << newPass.hgt << ", " << newPass.hcl << ", " << newPass.ecl << ", " << newPass.pid << endl;
                     
                     if (checkValid(newPass)) 
                         v1.push_back(newPass);
@@ -96,7 +91,6 @@ int main() {
         if (p.pid.size() > 9) {
             cout << p.pid << endl;
         }
-    //     cout << p.byr << ", " << p.iyr << ", " << p.eyr << ", " << p.hgt << ", " << p.hcl << ", " << p.ecl << ", " << p.pid << endl;
     }
 
     cout << "there are " << v1.size() << " valid passwords in the file" << endl;

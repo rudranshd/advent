@@ -19,14 +19,9 @@ int main() {
         while (getline(inputFile, s1)) {
             if (s1=="") {
                 ct = 0;
-                // for (auto i : group) {
-                    
-                //     cout << i << endl;
-                // }
 
                 for (auto i : gpMap) {
                     if (i.second == group.size()) ct++;
-                    // cout << i.first << " " << i.second << endl;
                 }
 
                 sum += ct;

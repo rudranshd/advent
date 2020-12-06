@@ -15,9 +15,6 @@ int main() {
         if (c1 == s1[min-1] ^ c1 == s1[max-1]) {
             validCt++;
         }
-        // if (count(s1.begin(), s1.end(), c1) >= min && count(s1.begin(), s1.end(), c1) <= max) {
-        //     validCt++;
-        // }
     }
     cout << validCt << endl;
     return 0;

@@ -15,7 +15,6 @@ struct Passport {
     string pid;
     bool metric;
 };
-    // && p1.pid.size() == 9
 
 bool checkValid (Passport p1) {
     if (stoi(p1.byr) >= 1920 && stoi(p1.byr) <= 2002 

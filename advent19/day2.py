@@ -1,6 +1,6 @@
 list = []
 
-with open ("C:\\Users\\rudra\\Documents\\advent\\advent2019\\inputs\\i22.txt") as f: 
+with open ("/mnt/c/Users/Rudy/Documents/advent/advent19/inputs/i2.txt") as f: 
     for line in f: 
         list.append(line.split(','))
 

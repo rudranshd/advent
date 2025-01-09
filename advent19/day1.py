@@ -4,7 +4,7 @@ import math
 sum = 0
 currSum = 0
 curr = 555
-with open ("C:\\Users\\rudra\\Documents\\advent\\advent2019\\inputs\\i1.txt") as fp: 
+with open ("/mnt/c/Users/Rudy/Documents/advent/advent19/inputs/i1.txt") as fp: 
     for line in fp: 
         currSum = 0
         curr = float(line)

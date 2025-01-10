@@ -27,8 +27,6 @@ def checkSafe(list) -> bool:
             return False
     return True
 
-
-n = len(reports)
 safeCt = 0
 for report in reports:
     for i in range(len(report)):

@@ -1,7 +1,6 @@
 import os
 import sys
 from datetime import datetime
-from collections import defaultdict
 
 start_time = datetime.now()
 
@@ -16,7 +15,7 @@ DIRECTIONS = {
     'W': (0, -1)
 }
 
-__location__ = os.path.join(sys.path[0], 'inputs/i6`.txt')
+__location__ = os.path.join(sys.path[0], 'inputs/i6.txt')
 
 map = [list(line.strip()) for line in open(__location__, 'r')]
 
@@ -45,6 +44,7 @@ def get_number_positions_visited(map):
     return count
 
 def recur(i, j, dir, map, recursion_depth=0):
+    """Recursively tries to exit graph, keeping track of the number of calls to the stack. """
     recursion_depth += 1
     map[i][j] = 'X'
 
@@ -60,10 +60,12 @@ def recur(i, j, dir, map, recursion_depth=0):
         recur(i + DIRECTIONS[dir][0], j + DIRECTIONS[dir][1], dir, map, recursion_depth)
 
 def is_there_loop_with_recursive_depth(i, j, dir, map, recursion_depth = 0):
+    """Recursively checks for loop, terminating if the number of calls far exceeds the iterations required to exit the graph. """
     recursion_depth += 1
     map[i][j] = 'X'
 
-    if recursion_depth > max_recursion_depth + 1000:
+    """386 extra calls are required to detect loop in the input. The original guess was 100, then 1000, then narrowed down from there. """
+    if recursion_depth > max_recursion_depth + 386:
         return True
     
     ni, nj = i + DIRECTIONS[dir][0], j + DIRECTIONS[dir][1]
@@ -75,7 +77,8 @@ def is_there_loop_with_recursive_depth(i, j, dir, map, recursion_depth = 0):
     else:
         return is_there_loop_with_recursive_depth(ni, nj, dir, map, recursion_depth)
 
-def is_there_loop_visited_set(i, j, dir, visited, map):
+def is_there_loop_with_visited_set(i, j, dir, visited, map):
+    """Recursively checks for loop using tuple-set of visited positions. """
     visited.add((i, j, dir))
     ni, nj = i + DIRECTIONS[dir][0], j + DIRECTIONS[dir][1]
     if not check_bounds(ni, nj, map):
@@ -85,9 +88,9 @@ def is_there_loop_visited_set(i, j, dir, visited, map):
         return True
 
     if map[ni][nj] == '#' or map[ni][nj] == 'O':
-        return is_there_loop_visited_set(i, j, get_next_dir(dir), visited, map)
+        return is_there_loop_with_visited_set(i, j, get_next_dir(dir), visited, map)
     else:
-        return is_there_loop_visited_set(ni, nj, dir, visited, map)
+        return is_there_loop_with_visited_set(ni, nj, dir, visited, map)
 
 print("Before recursion")   
 print_map(map)
@@ -102,13 +105,13 @@ print("After recursion")
 print_map(map)
 print("Total positions visited: ", get_number_positions_visited(map))
 print("Max recursion depth: ", max_recursion_depth)
-print('Duration: {}'.format(end_time - start_time))
+print('Part 1 runtime: {}'.format(end_time - start_time))
 
 # Part 2
 
 start_time = datetime.now()
-possible_obstruction_count_visited_set = 0
-possible_obstruction_count_recursion_depth = 0
+visited_set_obstruction_count = 0
+recursion_depth_obstruction_count = 0
 visited_positions = set()
 print()
 for i in range(len(original_map)):
@@ -117,12 +120,13 @@ for i in range(len(original_map)):
             new_map = [line.copy() for line in original_map]
             new_map[i][j] = 'O'
             visited_positions.clear()
-            if is_there_loop_visited_set(starting_point[0], starting_point[1], 'N', visited_positions, new_map):
-                possible_obstruction_count_visited_set += 1
+            if is_there_loop_with_visited_set(starting_point[0], starting_point[1], 'N', visited_positions, new_map):
+                visited_set_obstruction_count += 1
 end_time = datetime.now()
 
-print("Possible obstruction count using visited set:     ", possible_obstruction_count_visited_set)
-print('Visited set impl duration:     {}'.format(end_time - start_time))
+print("Possible obstruction count using visited set:     ", visited_set_obstruction_count)
+print('Visited set impl runtime:     {}'.format(end_time - start_time))
+"""Runtime is: 0:00:25.951932"""
 
 start_time = datetime.now()
 for i in range(len(original_map)):
@@ -131,8 +135,9 @@ for i in range(len(original_map)):
             new_map = [line.copy() for line in original_map]
             new_map[i][j] = 'O'
             if is_there_loop_with_recursive_depth(starting_point[0], starting_point[1], 'N', new_map):
-                possible_obstruction_count_recursion_depth += 1
+                recursion_depth_obstruction_count += 1
 end_time = datetime.now()
 
-print("Possible obstruction count using recursion depth: ", possible_obstruction_count_recursion_depth)
-print('Recursion depth impl duration: {}'.format(end_time - start_time))
+print("Possible obstruction count using recursion depth: ", recursion_depth_obstruction_count)
+print('Recursion depth impl runtime: {}'.format(end_time - start_time))
+"""Runtime is 0:00:19.733376"""

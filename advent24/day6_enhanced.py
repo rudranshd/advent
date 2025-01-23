@@ -73,7 +73,7 @@ def is_there_loop_with_visited_set(i, j, dir, visited, map):
 
 def check_for_loop_at_position(i, j):
     """Checks for a loop when placing an obstruction at (i, j)."""
-    new_map = [line.copy() for line in original_map]
+    new_map = [line.copy() for line in map]
     new_map[i][j] = 'O'
     visited_positions = set()
     if is_there_loop_with_visited_set(starting_point[0], starting_point[1], 'N', visited_positions, new_map):
@@ -84,7 +84,6 @@ print("Before recursion")
 print_map(map)
 print()
 
-original_map = [line.copy() for line in map]
 starting_point = get_start(map)
 result = recur(starting_point[0], starting_point[1], 'N', map)
 end_time = datetime.now()
@@ -114,13 +113,13 @@ return value (0 or 1). This is done in a separate loop after all tasks have been
 
 with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as pool: # Use all available CPUs
     results = [pool.apply_async(check_for_loop_at_position, args=(i, j))
-                for i in range(len(original_map))
-                for j in range(len(original_map[0]))
-                if original_map[i][j] == '.']
+                for i in range(len(map))
+                for j in range(len(map[0]))
+                if map[i][j] == 'X']
     for result in results:
         visited_set_obstruction_count += result.get()
 end_time = datetime.now()
 
 print("Possible obstruction count using visited set: ", visited_set_obstruction_count)
 print('Parallelized visited set impl runtime: {}'.format(end_time - start_time))
-"""Runtime is 0:00:04.316620"""
+"""Runtime is 0:00:00.995804"""

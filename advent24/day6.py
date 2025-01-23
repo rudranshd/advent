@@ -96,7 +96,6 @@ print("Before recursion")
 print_map(map)
 print()
 
-original_map = [line.copy() for line in map]
 starting_point = get_start(map)
 result = recur(starting_point[0], starting_point[1], 'N', map)
 end_time = datetime.now()
@@ -114,10 +113,11 @@ visited_set_obstruction_count = 0
 recursion_depth_obstruction_count = 0
 visited_positions = set()
 print()
-for i in range(len(original_map)):
-    for j in range(len(original_map[0])):
-        if original_map[i][j] == '.':
-            new_map = [line.copy() for line in original_map]
+"""HUGE optimization is to only check for obstacles in the original path of the guard as opposed to every possible postion. """
+for i in range(len(map)):
+    for j in range(len(map[0])):
+        if map[i][j] == 'X':
+            new_map = [line.copy() for line in map]
             new_map[i][j] = 'O'
             visited_positions.clear()
             if is_there_loop_with_visited_set(starting_point[0], starting_point[1], 'N', visited_positions, new_map):
@@ -126,13 +126,13 @@ end_time = datetime.now()
 
 print("Possible obstruction count using visited set:     ", visited_set_obstruction_count)
 print('Visited set impl runtime:     {}'.format(end_time - start_time))
-"""Runtime is: 0:00:25.951932"""
+"""Runtime is: 0:00:05.774249"""
 
 start_time = datetime.now()
-for i in range(len(original_map)):
-    for j in range(len(original_map[0])):
-        if original_map[i][j] == '.':
-            new_map = [line.copy() for line in original_map]
+for i in range(len(map)):
+    for j in range(len(map[0])):
+        if map[i][j] == 'X':
+            new_map = [line.copy() for line in map]
             new_map[i][j] = 'O'
             if is_there_loop_with_recursive_depth(starting_point[0], starting_point[1], 'N', new_map):
                 recursion_depth_obstruction_count += 1
@@ -140,4 +140,4 @@ end_time = datetime.now()
 
 print("Possible obstruction count using recursion depth: ", recursion_depth_obstruction_count)
 print('Recursion depth impl runtime: {}'.format(end_time - start_time))
-"""Runtime is 0:00:19.733376"""
+"""Runtime is 0:00:05.123404"""
